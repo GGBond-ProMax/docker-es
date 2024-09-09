@@ -12,7 +12,7 @@ LOGS_DIR="${ES_DATADIR}/logs"
 # 复制当前目录下的 config 文件夹到目标目录
 echo "将当前目录下的配置文件移动到 $CONFIG_DIR..."
 if [ -d "./config" ]; then
-    mv ./config "$ES_DATADIR"
+    mv -i ./config "$ES_DATADIR"
 else
     echo "当前目录下没有找到 config 目录。"
     exit 1

@@ -24,10 +24,6 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-# 复制配置文件到目标目录
-echo "将配置文件移动到 $CONFIG_DIR..."
-mv config "$ES_DATADIR"
-
 # 创建目标目录
 echo "检查并创建目录..."
 if [ ! -d "$ES_DATADIR" ]; then

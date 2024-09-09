@@ -4,6 +4,8 @@
 ELASTICSEARCH_IMAGE="elasticsearch:7.17.14"
 
 # 定义数据目录路径
+ES_USER="elastic"
+ES_PASS="123456"
 ES_DATADIR="/esdatadir"
 CONFIG_DIR="${ES_DATADIR}/config"
 DATA_DIR="${ES_DATADIR}/data"
@@ -50,6 +52,10 @@ if [ ! -d "$LOGS_DIR" ]; then
     mkdir -p "$LOGS_DIR"
 fi
 
+# 修改 /esdatadir 目录权限，使所有用户可以修改
+chmod -R 777 "$ES_DATADIR"
+echo "已将 $ES_DATADIR 目录权限设置为所有用户可读写执行。"
+
 # 拉取 Elasticsearch 镜像
 echo "拉取 Elasticsearch 镜像 ${ELASTICSEARCH_IMAGE}..."
 docker pull ${ELASTICSEARCH_IMAGE}
@@ -59,7 +65,8 @@ echo "运行 Elasticsearch 容器..."
 docker run --restart=always \
     -p 9200:9200 \
     -e "discovery.type=single-node" \
-    -e "ELASTIC_PASSWORD=123456" \
+    -e "ELASTIC_USERNAME=${ES_USER}" \
+    -e "ELASTIC_PASSWORD=${ES_PASS}" \
     -e ES_JAVA_OPTS="-Xms1g -Xmx1g" \
     --name docker-es \
     -d \
